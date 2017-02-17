@@ -13,3 +13,10 @@ $ vi .bash_profile
 export JAVA_HOME=$(/usr/libexec/java_home)
 $ source .bash_profile
 ```
+
+- Maven
+https://maven.apache.org/download.cgi
+wget http://mirrors.sonic.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+https://maven.apache.org/install.html
+
+mvn -v
