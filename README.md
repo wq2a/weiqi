@@ -38,6 +38,10 @@ mvn -v
 - https://medlineplus.gov/webservices.html
 - https://medlineplus.gov/connect/service.html#medication
 
+#### example
+
+- https://apps.nlm.nih.gov/medlineplus/services/mpconnect_service.cfm?mainSearchCriteria.v.cs=2.16.840.1.113883.6.69&knowledgeResponseType=application/json&mainSearchCriteria.v.dn=Chantix%200.5%20MG%20Oral%20Tablet&informationRecipient.languageCode.c=en
+
 
 
 ## Framework
