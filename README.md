@@ -16,11 +16,10 @@ $ source .bash_profile
 
 - Maven
 
-- https://maven.apache.org/download.cgi
-- wget http://mirrors.sonic.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
-- https://maven.apache.org/install.html
-
-mvn -v
+  - https://maven.apache.org/download.cgi
+  - wget http://mirrors.sonic.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+  - https://maven.apache.org/install.html
+  - mvn -v
 
 - Java spring
 
