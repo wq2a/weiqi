@@ -20,3 +20,26 @@ wget http://mirrors.sonic.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-3
 https://maven.apache.org/install.html
 
 mvn -v
+
+- Java spring
+
+  - Consuming a RESTful Web Service
+
+  - JDBC, Neo4j, or MangoDB
+
+  - Creating Asynchronous Methods
+
+  - Spring Boot with Docker
+
+## API
+
+### MedlinePlus
+
+- https://medlineplus.gov/webservices.html
+- https://medlineplus.gov/connect/service.html#medication
+
+
+
+## Framework
+
+### 
