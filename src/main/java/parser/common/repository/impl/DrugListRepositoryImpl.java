@@ -1,4 +1,4 @@
-package parser.medlineplus.repository.impl;
+package parser.common.repository.impl;
 
 import org.jsoup.Jsoup;
 import org.jsoup.helper.Validate;
@@ -12,14 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.sql.Timestamp;
 
-import parser.medlineplus.repository.DrugListRepository;
-import parser.medlineplus.model.Drug;
+import parser.common.repository.DrugListRepository;
+import parser.common.model.DrugLink;
 
 public class DrugListRepositoryImpl implements DrugListRepository {
 
-    public ArrayList<Drug> getDrugList() {
+    public DrugLink getDrugLink() {
 
-        return new ArrayList<Drug>();
+        return new DrugLink();
 
     }
 }
