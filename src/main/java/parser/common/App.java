@@ -44,16 +44,10 @@ public class App {
         ids.add("footnote");
         ids.add("d-pronunciation");
  
-        int entityId;
-        int propertyId;
-        String dlink;
-        
-        String property;
-        String tagId;
-        String desc;
-        String c;
-        String r;
+        int entityId, propertyId;
+        String dlink, property, tagId, desc, c, r;
         boolean flag;
+
         int len = 100;
         
         for (int i=0;i<1000;i++){
@@ -145,8 +139,6 @@ public class App {
                 Thread.sleep(300);
             }
         }
-
-
     }
 
 
@@ -251,10 +243,6 @@ public class App {
         in.close();
 
         return response.toString();
-
-        //print result
-        //System.out.println(response.toString());
-
     }
 }
 

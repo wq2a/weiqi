@@ -212,7 +212,7 @@ logger.info(ps);
 
     public ArrayList<String> getLink(int start, int range){
         int id = -1;
-        String sql = "SELECT link FROM drug_link_view limit ? , ?";
+        String sql = "SELECT link FROM drug_link_sub limit ? , ?";
         Connection conn = null;
         ArrayList<String> dList = new ArrayList<String>();
         try {
