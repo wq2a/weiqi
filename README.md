@@ -42,6 +42,11 @@ $ source .bash_profile
 - https://apps.nlm.nih.gov/medlineplus/services/mpconnect_service.cfm?mainSearchCriteria.v.cs=2.16.840.1.113883.6.69&knowledgeResponseType=application/json&mainSearchCriteria.v.dn=Chantix%200.5%20MG%20Oral%20Tablet&informationRecipient.languageCode.c=en
 
 
+### Wiki
+
+- https://en.wikipedia.org/w/api.php?action=query&prop=info&titles=Main%20page&redirects&inprop=url
+- https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=18630637&inprop=url
+- https://en.wikipedia.org/w/api.php?action=query&prop=info&titles=Fractures&redirects&inprop=url
 
 ## Framework
 
