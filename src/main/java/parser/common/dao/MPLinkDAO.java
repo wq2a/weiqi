@@ -2,11 +2,11 @@ package parser.common.dao;
 
 import java.util.*;
 
-import parser.common.model.DrugLink;
+import parser.common.model.MPLinkDTO;
 
-public interface DrugLinkDAO {
+public interface MPLinkDAO {
     // drug link
-    public void insert(DrugLink drugLink);
+    public void insert(MPLinkDTO drugLink);
     public ArrayList<String> getRxcui(int start, int range);
     public ArrayList<String> getLink(int start, int range);
 

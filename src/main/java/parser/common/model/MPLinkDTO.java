@@ -1,23 +1,37 @@
 package parser.common.model;
 
-public class DrugLink {
+public class MPLinkDTO{
 
-    private String rxcui;
+    private String code;
+    private String sab;
     private String title;
-    private String rel;
     private String link;
     private String updated;
+    private String rel;
 
-    public DrugLink() {
-
+    public MPLinkDTO() {
+        code = "";
+        sab = "";
+        title = "";
+        link = "";
+        updated = "";
+        rel = "";
     }
 
-    public void setRxcui(String rxcui) {
-        this.rxcui = rxcui;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getRxcui() {
-        return rxcui;
+    public String getCode() {
+        return code;
+    }
+
+    public void setSab(String sab) {
+        this.sab = sab;
+    }
+
+    public String getSab() {
+        return sab;
     }
 
     public void setTitle(String title) {
@@ -53,6 +67,7 @@ public class DrugLink {
 
     @Override
     public String toString() {
-        return rxcui + link;
+        return sab + " " + code + " " + title + " " + updated + " " + link;
     }
+
 }

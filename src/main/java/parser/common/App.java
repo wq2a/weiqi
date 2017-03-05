@@ -1,5 +1,9 @@
 package parser.common;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+/*
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -8,8 +12,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -29,14 +32,23 @@ import javax.net.ssl.HttpsURLConnection;
 
 import parser.common.dao.DrugLinkDAO;
 import parser.common.model.DrugLink;
+*/
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
 public class App {
 
     private static final Logger logger = LogManager.getLogger(App.class);
-    private static final String USER_AGENT = "Mozilla/5.0";
+    // private static final String USER_AGENT = "Mozilla/5.0";
 
     public static void main(String[] args) throws Exception {
 
+        SpringApplication.run(App.class, args);
+
+
+/*
         ApplicationContext appContext = new ClassPathXmlApplicationContext("Spring-Module.xml");
         DrugLinkDAO drugDAO = (DrugLinkDAO) appContext.getBean("drugLinkDAO");
 
@@ -141,7 +153,7 @@ public class App {
         }
     }
 
-
+*/
 
 
 /* TODO get link
@@ -214,7 +226,7 @@ public class App {
         }
 */
     }
-
+/*
     private static String sendGet(String rxcui) throws Exception {
 
         String url = "https://apps.nlm.nih.gov/medlineplus/services/mpconnect_service.cfm?knowledgeResponseType=application/json&mainSearchCriteria.v.cs=2.16.840.1.113883.6.88&mainSearchCriteria.v.c="+rxcui;
@@ -244,5 +256,7 @@ public class App {
 
         return response.toString();
     }
+*/
+
 }
 

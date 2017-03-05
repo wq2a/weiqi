@@ -3,6 +3,8 @@ package parser.common.dao.impl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.springframework.context.annotation.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,11 +13,12 @@ import javax.sql.DataSource;
 import java.util.*;
 
 
-import parser.common.dao.DrugLinkDAO;
-import parser.common.model.DrugLink;
+import parser.common.dao.MPLinkDAO;
+import parser.common.model.MPLinkDTO;
 
-public class JdbcDrugLinkDAO implements DrugLinkDAO {
-    private static final Logger logger = LogManager.getLogger(JdbcDrugLinkDAO.class);
+@Configuration
+public class JdbcMPLinkDAO implements MPLinkDAO {
+    private static final Logger logger = LogManager.getLogger(JdbcMPLinkDAO.class);
 
     private DataSource dataSource;
 
@@ -182,20 +185,21 @@ logger.info(ps);
         }
     }
 
-    public void insert(DrugLink drugLink) {
-        String sql = "INSERT INTO drug_link "+
-            "(rxcui, title, link, updated, rel)" +
-            " VALUES (?, ?, ?, ?, ?)";
+    public void insert(MPLinkDTO drugLink) {
+        String sql = "INSERT INTO mp_link "+
+            "(code, sab, title, link, updated, rel)" +
+            " VALUES (?, ?, ?, ?, ?, ?)";
 
         Connection conn = null;
         try {
             conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1,drugLink.getRxcui());
-            ps.setString(2,drugLink.getTitle());
-            ps.setString(3,drugLink.getLink());
-            ps.setString(4,drugLink.getUpdated());
-            ps.setString(5,drugLink.getRel());
+            ps.setString(1,drugLink.getCode());
+            ps.setString(2,drugLink.getSab());
+            ps.setString(3,drugLink.getTitle());
+            ps.setString(4,drugLink.getLink());
+            ps.setString(5,drugLink.getUpdated());
+            ps.setString(6,drugLink.getRel());
             logger.info(ps);
             ps.executeUpdate();
             ps.close();
