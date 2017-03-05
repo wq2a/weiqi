@@ -47,6 +47,7 @@ $ source .bash_profile
 - https://en.wikipedia.org/w/api.php?action=query&prop=info&titles=Main%20page&redirects&inprop=url
 - https://en.wikipedia.org/w/api.php?action=query&prop=info&pageids=18630637&inprop=url
 - https://en.wikipedia.org/w/api.php?action=query&prop=info&titles=Fractures&redirects&inprop=url
+- http://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=meaning&srprop=size%7Cwordcount%7Ctimestamp%7Csnippet&prop=info&inprop=url
 
 ## Framework
 

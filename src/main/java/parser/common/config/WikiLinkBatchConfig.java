@@ -1,5 +1,5 @@
 package parser.common;
-/*
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -7,7 +7,6 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.batch.item.database.Order;
 import org.springframework.batch.item.database.PagingQueryProvider;
-// import org.springframework.batch.item.database.support.H2PagingQueryProvider;
 import org.springframework.batch.item.database.support.MySqlPagingQueryProvider;
 
 import org.springframework.context.annotation.Bean;
@@ -16,7 +15,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
  
 import javax.sql.DataSource;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,19 +31,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import parser.common.model.CodeDTO;
-import parser.common.model.MPLinkDTO;
-import parser.common.dao.MPLinkDAO;
-import parser.common.dao.impl.JdbcMPLinkDAO;
-import parser.common.config.processor.MPLinkItemProcessor;
-import parser.common.config.writer.MPLinkItemWriter;
-import parser.common.config.listener.MPLinkJobListener;
-*/
-//@Configuration
-//@EnableBatchProcessing
-public class MPLinkBatchConfig {
-/*
-    private static final Logger logger = LogManager.getLogger(MPLinkBatchConfig.class);
+import parser.common.model.KeywordDTO;
+import parser.common.model.WikiLinkDTO;
+import parser.common.dao.WikiLinkDAO;
+import parser.common.dao.impl.JdbcWikiLinkDAO;
+import parser.common.config.processor.WikiLinkItemProcessor;
+import parser.common.config.writer.WikiLinkItemWriter;
+import parser.common.config.listener.WikiLinkJobListener;
+
+@Configuration
+@EnableBatchProcessing
+public class WikiLinkBatchConfig {
+
+    private static final Logger logger = LogManager.getLogger(WikiLinkBatchConfig.class);
 
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
@@ -57,45 +55,45 @@ public class MPLinkBatchConfig {
     public DataSource dataSource;
 
     @Bean
-    public ItemReader<CodeDTO> reader() {
+    public ItemReader<KeywordDTO> reader() {
 
-        JdbcPagingItemReader<CodeDTO> reader = new JdbcPagingItemReader<>();
+        JdbcPagingItemReader<KeywordDTO> reader = new JdbcPagingItemReader<>();
         reader.setDataSource(dataSource);
         reader.setPageSize(10);
 
         PagingQueryProvider provider = createQueryProvider();
         reader.setQueryProvider(provider);
 
-        reader.setRowMapper(new BeanPropertyRowMapper<>(CodeDTO.class));
+        reader.setRowMapper(new BeanPropertyRowMapper<>(KeywordDTO.class));
 
         return reader;
     }
 
     @Bean
-    public MPLinkItemProcessor processor() {
-        return new MPLinkItemProcessor();
+    public WikiLinkItemProcessor processor() {
+        return new WikiLinkItemProcessor();
     }
 
     @Bean
-    public MPLinkItemWriter writer() {
-        return new MPLinkItemWriter(mplinkDAO());
+    public WikiLinkItemWriter writer() {
+        return new WikiLinkItemWriter(wikilinkDAO());
     }
 
     // jobstep
     @Bean
-    public Job importMPLinkJob(MPLinkJobListener listener) {
-        return jobBuilderFactory.get("importMPLinkJob")
+    public Job importWikiLinkJob(WikiLinkJobListener listener) {
+        return jobBuilderFactory.get("importWikiLinkJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .flow(step1())
+                .flow(wikiStep())
                 .end()
                 .build();
     }
 
     @Bean
-    public Step step1() {
-        return stepBuilderFactory.get("step1")
-                .<CodeDTO, ArrayList<MPLinkDTO>> chunk(10)
+    public Step wikiStep() {
+        return stepBuilderFactory.get("wikiStep")
+                .<KeywordDTO, ArrayList<WikiLinkDTO>> chunk(10)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer())
@@ -103,17 +101,17 @@ public class MPLinkBatchConfig {
     }
 
     @Bean
-    public MPLinkDAO mplinkDAO() {
-        JdbcMPLinkDAO mplink = new JdbcMPLinkDAO();
-        mplink.setDataSource(dataSource);
-        return mplink;
+    public WikiLinkDAO wikilinkDAO() {
+        JdbcWikiLinkDAO wikilink = new JdbcWikiLinkDAO();
+        wikilink.setDataSource(dataSource);
+        return wikilink;
     }
 
     private PagingQueryProvider createQueryProvider() {
         MySqlPagingQueryProvider provider = new MySqlPagingQueryProvider();
 
-        provider.setSelectClause("select code, sab");
-        provider.setFromClause("from mrconso_icd910_u_code_temp");
+        provider.setSelectClause("select str, sab");
+        provider.setFromClause("from mrconso_icd910_u_str_temp");
         provider.setSortKeys(sortByCodeAsc());
 
         return provider;
@@ -121,8 +119,7 @@ public class MPLinkBatchConfig {
 
     private Map<String, Order> sortByCodeAsc() {
         Map<String, Order> sortConf = new HashMap<>();
-        sortConf.put("code", Order.ASCENDING);
+        sortConf.put("str", Order.ASCENDING);
         return sortConf;
     }
-    */
 }
