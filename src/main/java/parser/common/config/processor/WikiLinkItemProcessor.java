@@ -4,7 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.util.ArrayList;
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.batch.item.ItemProcessor;
 
@@ -51,8 +54,29 @@ public class WikiLinkItemProcessor implements ItemProcessor<KeywordDTO, ArrayLis
      */
     private String buildURL(final KeywordDTO str) {
         StringBuffer url = new StringBuffer("https://en.wikipedia.org/w/api.php?action=query&prop=info&redirects&inprop=url");
-        url.append("&titles=").append(str.getStr());
+
+        String newStr = filter(str.getStr());
+logger.info("from="+str.getStr());
+        url.append("&titles=").append(newStr);
+logger.info("to="+newStr);
+
         return url.toString();
+    }
+
+    private String filter(String str) {
+        Map<String,String> tokens = new HashMap<String,String>();
+        tokens.put("light", "Wanjiang");
+
+        String patternString = "(" + StringUtils.join(tokens.keySet(), "|") + ")";
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(str);
+
+        StringBuffer sb = new StringBuffer();
+        while(matcher.find()) {
+            matcher.appendReplacement(sb, tokens.get(matcher.group(1)));
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 
     private ArrayList<WikiLinkDTO> parser(final KeywordDTO str, ResponseEntity<String> response) {
@@ -103,11 +127,12 @@ public class WikiLinkItemProcessor implements ItemProcessor<KeywordDTO, ArrayLis
                 wikilinks.add(wikilink);
             }
 
-            for(WikiLinkDTO wiki : wikilinks)
+            for(WikiLinkDTO wiki : wikilinks){
                 logger.info(wiki);
+            }
 
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            // logger.error(e.getMessage());
             WikiLinkDTO wikilink = new WikiLinkDTO();
             wikilink.setStr(str.getStr());
             wikilink.setSab(str.getSab());

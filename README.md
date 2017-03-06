@@ -49,6 +49,10 @@ $ source .bash_profile
 - https://en.wikipedia.org/w/api.php?action=query&prop=info&titles=Fractures&redirects&inprop=url
 - http://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=meaning&srprop=size%7Cwordcount%7Ctimestamp%7Csnippet&prop=info&inprop=url
 
+- https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=burn%20ankle&srwhat=text&srprop=timestamp&continue=
+
+- https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=meaning&prop=info&inprop=url&format=json
+
 ## Framework
 
 ### 
