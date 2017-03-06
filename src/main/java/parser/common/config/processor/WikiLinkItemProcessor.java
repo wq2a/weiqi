@@ -43,7 +43,7 @@ public class WikiLinkItemProcessor implements ItemProcessor<KeywordDTO, ArrayLis
 
         String url = buildURL(str);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        Thread.sleep(1000);
+        Thread.sleep(300);
 
         return parser(str, response);
 
@@ -53,19 +53,18 @@ public class WikiLinkItemProcessor implements ItemProcessor<KeywordDTO, ArrayLis
      * https://en.wikipedia.org/w/api.php?action=query&prop=info&titles=Main%20page&redirects&inprop=url
      */
     private String buildURL(final KeywordDTO str) {
-        StringBuffer url = new StringBuffer("https://en.wikipedia.org/w/api.php?action=query&prop=info&redirects&inprop=url");
+        StringBuffer url = new StringBuffer("https://en.wikipedia.org/w/api.php?action=query&prop=info&redirects&inprop=url&format=json");
 
         String newStr = filter(str.getStr());
-logger.info("from="+str.getStr());
         url.append("&titles=").append(newStr);
-logger.info("to="+newStr);
 
         return url.toString();
     }
 
     private String filter(String str) {
         Map<String,String> tokens = new HashMap<String,String>();
-        tokens.put("light", "Wanjiang");
+        tokens.put("'", "");
+        tokens.put("\"", "");
 
         String patternString = "(" + StringUtils.join(tokens.keySet(), "|") + ")";
         Pattern pattern = Pattern.compile(patternString);
@@ -98,14 +97,16 @@ logger.info("to="+newStr);
         String href = "";
         String pageid = "";
         String touched = "";
+        Object obj = null;
+        JSONObject jo = null;
 
         try {
-            Object obj = parser.parse(r);
-            JSONObject jo = ((JSONObject)obj);
+            obj = parser.parse(r);
+            jo = ((JSONObject)obj);
 
             jo = (JSONObject)(jo.get("query"));
             jo = (JSONObject)(jo.get("pages"));
-                    
+
             Iterator<String> keys = jo.keySet().iterator();
             while(keys.hasNext()) {
                 String keyValue = (String)keys.next();
@@ -132,7 +133,8 @@ logger.info("to="+newStr);
             }
 
         } catch (Exception e) {
-            // logger.error(e.getMessage());
+            if(e != null)
+                logger.error(e.getMessage());
             WikiLinkDTO wikilink = new WikiLinkDTO();
             wikilink.setStr(str.getStr());
             wikilink.setSab(str.getSab());
