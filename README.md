@@ -78,8 +78,12 @@ $ source .bash_profile
   - https://metamap.nlm.nih.gov
 - install World Sense Disambiguation Server (WSD Server)
   - https://metamap.nlm.nih.gov/WSDServer.shtml 
+- install MedPost/SKR Part of Speech Tagger
+  - https://metamap.nlm.nih.gov/MedPostSKRTagger.shtml
+  - Update run.bat or run.sh changing the top two lines to correspond to locations in your installation.
 - install metamap
   - https://metamap.nlm.nih.gov/Installation.shtml
+  - copy WSD_Server directory if public_mm/WSD_Server/centroids.ben.gz is not found
 - install metamap Java API
   - https://metamap.nlm.nih.gov/JavaApi.shtml
   - https://softwarecave.org/2014/06/14/adding-external-jars-into-maven-project/
