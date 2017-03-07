@@ -5,6 +5,10 @@ parserjar:
 	cat /dev/null > log/parser.log
 	mvn clean package
 
+mvnrepo:
+	mvn install:install-file -Dfile=lib/prologbeans.jar -DgroupId=se.sics -DartifactId=prologbeans -Dversion=4.2.1 -Dpackaging=jar
+	mvn install:install-file -Dfile=lib/metamap-api-2.0.jar -DgroupId=se.sics -DartifactId=metamapapi -Dversion=2.0.0 -Dpackaging=jar
+
 clean:
 	rm -rf dependency-reduced-pom.xml target
 
