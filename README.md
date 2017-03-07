@@ -65,17 +65,14 @@ $ source .bash_profile
 
 ## Framework
 
-### SemRep
-
-#### Semantic Knowledge Representation
-
-- https://semrep.nlm.nih.gov/SemRep.v1.7_Installation.html
-
-#### MetaMap
+### SemRep (Semantic Knowledge Representation)
 
 - install semrep
   - https://semrep.nlm.nih.gov/SemRep.v1.7_Installation.html
-  - https://metamap.nlm.nih.gov
+
+#### MetaMap
+
+- https://metamap.nlm.nih.gov
 - install World Sense Disambiguation Server (WSD Server)
   - https://metamap.nlm.nih.gov/WSDServer.shtml 
 - install MedPost/SKR Part of Speech Tagger
