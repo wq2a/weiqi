@@ -13,6 +13,10 @@ export JAVA_HOME=$(/usr/libexec/java_home)
 $ source .bash_profile
 ```
 
+  - Open jdk
+    - http://openjdk.java.net/install/
+    - openjdk-8-jre, java-1.8.0-openjdk, java-1.8.0-openjdk-devel
+
 - Maven
 
   - https://maven.apache.org/download.cgi
