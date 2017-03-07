@@ -33,7 +33,10 @@ public class WikiLinkJobListener extends JobExecutionListenerSupport {
         // create temp code table
         logger.info("Batch start, create temp table");
         jdbcTemplate.execute("drop table if exists mrconso_icd910_u_str_temp");
-        jdbcTemplate.execute("create table mrconso_icd910_u_str_temp select * from mrconso_icd910_u_str_view where CONCAT(str,sab) not in (select CONCAT(str, sab) from wiki_link)");
+        jdbcTemplate.execute("create table mrconso_icd910_u_str_temp select * from mrconso_icd910_u_str_view where str > (select str from wiki_link order by str desc limit 1)");
+
+        // This will be inefficient when create table
+        // jdbcTemplate.execute("create table mrconso_icd910_u_str_temp select * from mrconso_icd910_u_str_view where CONCAT(str,sab) not in (select CONCAT(str, sab) from wiki_link)");
     }
 
     @Override
