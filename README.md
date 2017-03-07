@@ -73,15 +73,16 @@ $ source .bash_profile
 
 #### MetaMap
 
-- https://metamap.nlm.nih.gov
+- install semrep
+  - https://semrep.nlm.nih.gov/SemRep.v1.7_Installation.html
+  - https://metamap.nlm.nih.gov
 - install World Sense Disambiguation Server (WSD Server)
   - https://metamap.nlm.nih.gov/WSDServer.shtml 
-- How to install metamap Java API
+- install metamap
+  - https://metamap.nlm.nih.gov/Installation.shtml
+- install metamap Java API
   - https://metamap.nlm.nih.gov/JavaApi.shtml
   - https://softwarecave.org/2014/06/14/adding-external-jars-into-maven-project/
-- How to install
-  - https://metamap.nlm.nih.gov/Installation.shtml
-  - https://semrep.nlm.nih.gov/SemRep.v1.7_Installation.html
 
 
 ### 
