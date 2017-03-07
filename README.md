@@ -75,6 +75,9 @@ $ source .bash_profile
 
 - https://metamap.nlm.nih.gov
 - https://metamap.nlm.nih.gov/JavaApi.shtml
+- How to install
+  - https://metamap.nlm.nih.gov/Installation.shtml
+  - https://semrep.nlm.nih.gov/SemRep.v1.7_Installation.html
 
 
 ### 
