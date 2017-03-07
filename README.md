@@ -53,6 +53,24 @@ $ source .bash_profile
 
 - https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=meaning&prop=info&inprop=url&format=json
 
+#### Wiki content
+
+- get the section list
+- https://en.wikipedia.org/w/api.php?action=parse&prop=sections&page=Weight_loss&format=json
+
+
 ## Framework
+
+### SemRep
+
+#### Semantic Knowledge Representation
+
+- https://semrep.nlm.nih.gov/SemRep.v1.7_Installation.html
+
+#### MetaMap
+
+- https://metamap.nlm.nih.gov
+- https://metamap.nlm.nih.gov/JavaApi.shtml
+
 
 ### 
