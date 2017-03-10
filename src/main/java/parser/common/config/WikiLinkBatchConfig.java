@@ -110,8 +110,12 @@ public class WikiLinkBatchConfig {
     private PagingQueryProvider createQueryProvider() {
         MySqlPagingQueryProvider provider = new MySqlPagingQueryProvider();
 
-        provider.setSelectClause("select str, sab");
-        provider.setFromClause("from mrconso_icd910_u_str_temp");
+        provider.setSelectClause("select str, 'RXNORM' as sab");
+        provider.setFromClause("from drug_str_temp");
+        //provider.setSelectClause("select str, 'RXNORM' as sab");
+        //provider.setFromClause("from drug_str_view");
+        //provider.setSelectClause("select str, sab");
+        //provider.setFromClause("from mrconso_icd910_u_str_temp");
         provider.setSortKeys(sortByCodeAsc());
 
         return provider;

@@ -42,8 +42,17 @@ public class WikiLinkItemProcessor implements ItemProcessor<KeywordDTO, ArrayLis
         logger.info(str);
 
         String url = buildURL(str);
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        ResponseEntity<String> response = null;
+        try{
+            response = restTemplate.getForEntity(url, String.class);
+        }catch(Exception e){
+            logger.error(e.getMessage());
+        }
+        
         Thread.sleep(300);
+        if(response == null){
+            return new ArrayList<WikiLinkDTO>();
+        }
 
         return parser(str, response);
 
