@@ -64,19 +64,37 @@ public class App {
             
             try{
                 Document doc = Jsoup.connect(url).get();
-                Element toc_box = doc.getElementById("toc-box");
-                for(Element ul : toc_box.getElementsByTag("ul")) {
+                Element tt = doc.getElementById("table-of-contents");
+
+                Elements toc_columns = tt.getElementsByTag("div");
+                logger.info("toc_columns");
+                for(Element tocc : toc_columns){
+                    logger.info("tocc");
+                for(Element ul : tocc.getElementsByTag("ul")) {
+                    logger.info("ul");
                     for(Element li : ul.getElementsByTag("li")){
+                        logger.info("li");
                         for(Element a : li.getElementsByTag("a")){
+                            logger.info("a");
                             property = "";
                             tagId = "";
                             desc = "";
                             c = "";
                 
                             tagId = a.attr("href").replace("#","");
-                            property = tagId.replace("-","_");
+                            //property = tagId.replace("-","_");
+                            property = a.text().replace(" ","_");
                             desc = a.text();
-                            Element content = doc.getElementById(tagId);
+                            Element content;
+                            if(tagId.contains("summary")){
+                                tagId = "topsum_section";
+                                content = doc.getElementById(tagId);
+                            }else{
+                                tagId += "_section";
+                                content = doc.getElementById(tagId);
+                            }
+                            
+                            logger.info(tagId);
                             c = content.text();
                 
                             logger.info("tagId:"+tagId);
@@ -94,6 +112,7 @@ public class App {
                         }
                     }
                 }
+            }
                 
                 flag = false;
                 r = "";

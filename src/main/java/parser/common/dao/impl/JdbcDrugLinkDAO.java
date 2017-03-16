@@ -25,7 +25,7 @@ public class JdbcDrugLinkDAO implements DrugLinkDAO {
 
     public int isDrugPropertyExist(String name) {
         int id = -1;
-        String sql = "SELECT id FROM mp_drug_info_property where name = ? ";
+        String sql = "SELECT id FROM mp_icd910_info_property where name = ? ";
         Connection conn = null;
         try {
             conn = dataSource.getConnection();
@@ -56,7 +56,7 @@ logger.info(ps);
 
     public int isDrugEntityExist(String link) {
         int id = -1;
-        String sql = "SELECT id FROM mp_drug_info_entity where rxcui_link = ? ";
+        String sql = "SELECT id FROM mp_icd910_info_entity where link = ? ";
         Connection conn = null;
         try {
             conn = dataSource.getConnection();
@@ -85,8 +85,8 @@ logger.info(ps);
     }
 
     public void insertDrugEntity (String link) {
-        String sql = "INSERT INTO mp_drug_info_entity "+
-            "(rxcui_link)" +
+        String sql = "INSERT INTO mp_icd910_info_entity "+
+            "(link)" +
             " VALUES (?)";
 
         Connection conn = null;
@@ -109,7 +109,7 @@ logger.info(ps);
     }
 
     public void updateBadDrugEntity (int id) {
-        String sql = "update mp_drug_info_entity set bad=1 where id = ?";
+        String sql = "update mp_icd910_info_entity set bad=1 where id = ?";
 
         Connection conn = null;
         try {
@@ -131,7 +131,7 @@ logger.info(ps);
     }
 
     public void insertDrugProperty (String name, String desc) {
-        String sql = "INSERT INTO mp_drug_info_property "+
+        String sql = "INSERT INTO mp_icd910_info_property "+
             "(name, brief)" +
             " VALUES (?, ?)";
 
@@ -157,7 +157,7 @@ logger.info(ps);
     }
 
     public void insertDrugValue(int entityId, int propertyId, String value) {
-        String sql = "INSERT INTO mp_drug_info_value "+
+        String sql = "INSERT INTO mp_icd910_info_value "+
             "(entity_id, property_id, value)" +
             " VALUES (?, ?, ?)";
 
@@ -212,7 +212,7 @@ logger.info(ps);
 
     public ArrayList<String> getLink(int start, int range){
         int id = -1;
-        String sql = "SELECT link FROM drug_link_sub limit ? , ?";
+        String sql = "SELECT link FROM mp_icd910_info_entity_temp limit ? , ?";
         Connection conn = null;
         ArrayList<String> dList = new ArrayList<String>();
         try {
