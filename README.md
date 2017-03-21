@@ -105,6 +105,27 @@ $ source .bash_profile
     ESCAPECHAR '\'
   );
   ```
+  - concepts table
 
+  ```
+  CREATE TABLE WAN_CONCEPTS (
+    id    integer,
+    cui   integer,
+    cui_pn varchar(256),
+    sty    varchar(256),
+    count_all  integer,
+    notecount integer
+  );
 
-
+  CREATE TABLE WAN_CONCEPTS_DATA (
+    id    integer,
+    docnum varchar(60),
+    cui   integer,
+    sentnum integer,
+    wordnum integer,
+    score   double,
+    attr varchar(256),
+    orig_text    varchar(256),
+    section_string  varchar(1000)
+  );
+  ```
