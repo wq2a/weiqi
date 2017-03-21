@@ -86,4 +86,25 @@ $ source .bash_profile
   - https://softwarecave.org/2014/06/14/adding-external-jars-into-maven-project/
 
 
-### 
+## Netezza
+
+- import csv to Netezza
+
+  - sql export as csv, Wrap choose empty (not double quote)
+
+  - import script
+
+  ```
+  insert into WAN_CONCEPTS SELECT * FROM
+    EXTERNAL '/Users/wanjiang/Desktop/wanjiang_concepts_21.csv'
+    USING (DELIMITER ','
+    REMOTESOURCE 'JDBC'
+    LOGDIR '/Users/wanjiang/Desktop/'
+    ENCODING 'internal'
+    SKIPROWS 1
+    ESCAPECHAR '\'
+  );
+  ```
+
+
+
