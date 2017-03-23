@@ -41,6 +41,12 @@ $ source .bash_profile
 - https://medlineplus.gov/webservices.html
 - https://medlineplus.gov/connect/service.html#medication
 
+- Domain type
+  - https://medlineplus.gov
+  - https://nccih.nih.gov
+  - https://www.cancer.gov
+  - https://ghr.nlm.nih.gov
+
 #### example
 
 - https://apps.nlm.nih.gov/medlineplus/services/mpconnect_service.cfm?mainSearchCriteria.v.cs=2.16.840.1.113883.6.69&knowledgeResponseType=application/json&mainSearchCriteria.v.dn=Chantix%200.5%20MG%20Oral%20Tablet&informationRecipient.languageCode.c=en
@@ -129,3 +135,8 @@ $ source .bash_profile
     section_string  varchar(1000)
   );
   ```
+
+## SPL
+
+- DailyMed
+  - https://dailymed.nlm.nih.gov/dailymed/spl-resources-all-drug-labels.cfm
