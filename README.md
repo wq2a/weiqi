@@ -140,3 +140,10 @@ $ source .bash_profile
 
 - DailyMed
   - https://dailymed.nlm.nih.gov/dailymed/spl-resources-all-drug-labels.cfm
+
+## Others
+
+- sqldump
+  - mysqldump --single-transaction -u root -p db_name table_name > test.sql
+- php configure
+
