@@ -145,5 +145,10 @@ $ source .bash_profile
 
 - sqldump
   - mysqldump --single-transaction -u root -p db_name table_name > test.sql
+
 - php configure
+
+  ```
+  ./configure --prefix=/Users/wanjiang/php --with-mysql=mysqlnd --with-mysqli=mysqlnd --enable-mbstring --with-gd --with-zlib --enable-pdo --with-pdo-sqlite --with-pdo-mysql=mysqlnd --with-ldap --with-ldap-sasl --with-pear --enable-sockets --with-curl --with-openssl --enable-cgi --enable-soap
+  ```
 
