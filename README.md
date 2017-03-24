@@ -148,13 +148,18 @@ $ source .bash_profile
 
 - php configure
 
+  - install
   ```
   ./configure --prefix=/Users/wanjiang/php --with-mysql=mysqlnd --with-mysqli=mysqlnd --enable-mbstring --with-gd --with-zlib --enable-pdo --with-pdo-sqlite --with-pdo-mysql=mysqlnd --with-ldap --with-ldap-sasl --with-pear --enable-sockets --with-curl --with-openssl --enable-cgi --enable-soap
   ```
 
+  - apache config
+
   ```
   LoadModule rewrite_module libexec/apache2/mod_rewrite.so
   ```
+
+  - add index.php in request
 
   ```
   <IfModule mod_rewrite.c>
