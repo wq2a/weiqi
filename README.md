@@ -152,3 +152,17 @@ $ source .bash_profile
   ./configure --prefix=/Users/wanjiang/php --with-mysql=mysqlnd --with-mysqli=mysqlnd --enable-mbstring --with-gd --with-zlib --enable-pdo --with-pdo-sqlite --with-pdo-mysql=mysqlnd --with-ldap --with-ldap-sasl --with-pear --enable-sockets --with-curl --with-openssl --enable-cgi --enable-soap
   ```
 
+  ```
+  LoadModule rewrite_module libexec/apache2/mod_rewrite.so
+  ```
+
+  ```
+  <IfModule mod_rewrite.c>
+    RewriteEngine On
+    #RewriteBase /
+    RewriteCond %{REQUEST_FILENAME} !-d
+    #RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+  </IfModule>
+  ```
+  
