@@ -19,7 +19,7 @@ from StringIO import StringIO
 from itertools import chain
 
 def main(argv):
-    options = {'dbhost':'localhost', 'dbuser':'root', 'dbpass':'', 'dbname':'spl', 'dataset':'', 'poolsize':8}
+    options = {'dbhost':'localhost', 'dbuser':'root', 'dbpass':'', 'dbname':'', 'dataset':'', 'poolsize':8}
 
     try:
         opts, args = getopt.getopt(argv, "h", [opt+'=' for opt in options.keys()])
@@ -34,7 +34,12 @@ def main(argv):
         else:
             print opt, 'option not allowed'
             sys.exit(2)
- 
+    # check options
+    for key, value in options.iteritems():
+        if value=='' and key!='dbpass':
+            print key, 'is required'
+            sys.exit(2)
+
     fList = os.listdir('../data')
     length = len(fList)
     poolsize = int(options['poolsize'])
@@ -95,9 +100,10 @@ def f(pid, fl, opts):
                         elif tag(el, 'title'):
                             data['entityName'] = el.text
                             if not data['entityName']:
-                                attt = el.attrib
-                                if 'value' in attt:
-                                    data['entityName'] = attt['value']
+                                data['entityName'] = stringfy(el)
+                                #attt = el.attrib
+                                #if 'value' in attt:
+                                #    data['entityName'] = attt['value']
                             if not data['entityName']:
                                 data['entityName'] = ''
    
@@ -154,21 +160,25 @@ def component(cursor,opts, entityID,comp,flag):
                     ddd = ''
                 elif tag(e, 'title'):
                     pdata['name'] = e.text
+                    if not data['name']:
+                        pdata['name'] = stringfy(e)
+                    if not pdata['name']:
+                        pdata['name'] = ''
                 else:
                     vdata['value'] += stringfy(e)
     if flag:
         #print '+++',code,'+',sab, '+', sabCode, '+', propertyName,'===', value
         # TODO insert into property and value table
         # propertyid hash of all
-        if not pdata['name']:
-            pdata['name'] = ''
         try:
             pdata['id'] = hash(pdata['name']+pdata['code']+pdata['sabCode'])
             vdata['propertyID'] = pdata['id']
             insertProperty(cursor, pdata, opts)
             insertValue(cursor, vdata, opts)
         except:
-            print 'ERROR', pdata, vdata
+            print 'ERROR', vdata
+
+
 def insertEntity(cursor, data, opts):
     sql = 'insert into '+opts['dataset']+'_info_entity (id, name, code, sabCode, sab, effectivetime) values ("%s","%s","%s","%s","%s","%s")' % (data['entityID'],mysqlformat(data['entityName']),data['code'],data['sabCode'], mysqlformat(data['sab']), data['effectiveTime'])
     cursor.execute(sql)
