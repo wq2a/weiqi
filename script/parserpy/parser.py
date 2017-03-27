@@ -10,16 +10,16 @@ import sys
 import os
 import md5
 import getopt
+import signal
 
-from multiprocessing import Pool
-from multiprocessing import Process
+from multiprocessing import Pool, Process, cpu_count
 from lxml import html
 from lxml import etree
 from StringIO import StringIO
 from itertools import chain
 
 def main(argv):
-    options = {'dbhost':'localhost', 'dbuser':'root', 'dbpass':'', 'dbname':'', 'dataset':'', 'poolsize':8}
+    options = {'dbhost':'localhost', 'dbuser':'root', 'dbpass':'', 'dbname':'', 'dataset':'', 'poolsize':7, 'data':'../../../data'}
 
     try:
         opts, args = getopt.getopt(argv, "h", [opt+'=' for opt in options.keys()])
@@ -28,19 +28,33 @@ def main(argv):
         sys.exit(2)
     for opt, arg in opts:
         if opt in ('-h'):
-            print './parser.py --dbhost locahost --dbuser root --dbpass pass --dataset rxnorm'
+            print './parser.py --dbhost locahost --dbuser root --dbpass pass --dbname spl --dataset otc --poolsize 6'
         elif opt[2:] in options.keys():
             options[opt[2:]] = arg
         else:
             print opt, 'option not allowed'
             sys.exit(2)
+
+
     # check options
     for key, value in options.iteritems():
         if value=='' and key!='dbpass':
             print key, 'is required'
             sys.exit(2)
 
-    fList = os.listdir('../data')
+    if options['poolsize'] > cpu_count():
+        print 'poolsize is >', cpu_count()
+        sys.exit(2)
+
+    options['data'] += '/'+options['dataset']
+    # check data root dir, there's dir named 
+    if not os.path.isdir(options['data']):
+        print 'Error no data dir in', options['data']
+        sys.exit(2)
+
+
+
+    fList = os.listdir(options['data'])
     length = len(fList)
     poolsize = int(options['poolsize'])
     blocksize = length//poolsize
@@ -60,6 +74,7 @@ def main(argv):
             p = Process(target=f, args=(i, fList[start:end],options,))
         p.start()
         procs.append(p)
+        print i,'started!'
 
     print 'wait all the processes to finish'
 
@@ -67,15 +82,27 @@ def main(argv):
         p.join()
 
     print 'done!'
+    time.sleep(2000)
+'''
+    for p in procs:
+        print p.pid, 'is terminating..'
+        if not p.is_alive():
+            p.terminate()
+            time.sleep(300)
+        if p.exitcode == -signal.SIGTERM:
+            print p.pid, 'is terminated'
+'''
+    print 'Bye!'
+    exit(2)
 
 def f(pid, fl, opts):
     db = MySQLdb.connect(opts['dbhost'],opts['dbuser'],opts['dbpass'],opts['dbname'])
     cursor = db.cursor()
     for f in fl:
         if '.zip' in f:
-            dirP = '../data/'+f.replace('.zip','')
-            os.system('mkdir '+dirP)
-            os.system('cp ../data/'+f+' '+dirP+'/')
+            dirP = opts['data']+'/'+f.replace('.zip','')
+            os.system('mkdir ' + dirP + ' 2>/dev/null')
+            os.system('cp '+opts['data']+'/'+f+' '+dirP+'/')
             os.system('tar -zxf '+dirP+'/'+f + ' -C '+dirP)
             fns = os.listdir(dirP+'/')
             for fn in fns:
@@ -118,24 +145,13 @@ def f(pid, fl, opts):
                     #TODO insert into entity table
                     try:
                         insertEntity(cursor, data, opts)
-                    except:
-                        print 'ERROR', data
+                        # print pid, 'insert', data['entityID']
+                    except Exception as e:
+                        print 'ERROR e',e,len(data['name'])
                     db.commit()
  
     db.close()
-
-
-def tag(el,tag):
-    return realTag(el)==tag
-
-def realTag(el):
-    return re.sub(r'\{.*\}','',el.tag)
-    
-def stringfy(el):
-    if len(el.getchildren())==0 and el.text:
-        return el.text
-    parts = ([el.text] + list(chain(*([c.text, re.sub(r'<[^>]*>|\[[^\]]*\]','',etree.tostring(c)).strip('\t\n\r'),c.tail] for c in el.getchildren())))+[el.tail])
-    return ''.join(filter(None, parts))
+    return
 
 def component(cursor,opts, entityID,comp,flag):
     pdata = {'id':'','name':'','code':'','sabCode':'','sab':''}
@@ -145,7 +161,7 @@ def component(cursor,opts, entityID,comp,flag):
             for e in el:
                 if tag(e, 'code'):
                     attrs = e.attrib
-                    if not flag and attrs['code'] != '34067-9':
+                    if not flag and 'code' in attrs and attrs['code'] != '34067-9':
                         break
                     else:
                         pdata['code'] = attrs['code']
@@ -160,7 +176,7 @@ def component(cursor,opts, entityID,comp,flag):
                     ddd = ''
                 elif tag(e, 'title'):
                     pdata['name'] = e.text
-                    if not data['name']:
+                    if not pdata['name']:
                         pdata['name'] = stringfy(e)
                     if not pdata['name']:
                         pdata['name'] = ''
@@ -173,10 +189,11 @@ def component(cursor,opts, entityID,comp,flag):
         try:
             pdata['id'] = hash(pdata['name']+pdata['code']+pdata['sabCode'])
             vdata['propertyID'] = pdata['id']
-            insertProperty(cursor, pdata, opts)
-            insertValue(cursor, vdata, opts)
-        except:
-            print 'ERROR', vdata
+            if pdata['id'] != 0:
+                insertProperty(cursor, pdata, opts)
+                insertValue(cursor, vdata, opts)
+        except Exception as e:
+            print 'ERROR p', e,len(pdata['name'])
 
 
 def insertEntity(cursor, data, opts):
@@ -195,6 +212,18 @@ def insertValue(cursor, data, opts):
     sql = 'insert into '+opts['dataset']+'_info_value (entity_id, property_id,value) values ("%s","%s","%s")' % (data['entityID'],data['propertyID'],mysqlformat(data['value']))
     cursor.execute(sql)
  
+def tag(el,tag):
+    return realTag(el)==tag
+
+def realTag(el):
+    return re.sub(r'\{.*\}','',el.tag)
+    
+def stringfy(el):
+    if len(el.getchildren())==0 and el.text:
+        return el.text
+    parts = ([el.text] + list(chain(*([c.text, re.sub(r'<[^>]*>|\[[^\]]*\]','',etree.tostring(c)).strip('\t\n\r'),c.tail] for c in el.getchildren())))+[el.tail])
+    return ''.join(filter(None, parts))
+
 def mysqlformat(value):
     temp = re.sub(r'"','',value)
     return re.sub(r"'",'',temp)
