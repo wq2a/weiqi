@@ -29,6 +29,7 @@ def main(argv):
     for opt, arg in opts:
         if opt in ('-h'):
             print './parser.py --dbhost locahost --dbuser root --dbpass pass --dbname spl --dataset otc --poolsize 6'
+            print './parser.py --dbhost cpm01lt.hs.it.vumc.io --dbuser cpmds --dbpass pass --dbname spl --dataset otc --poolsize 6'
         elif opt[2:] in options.keys():
             options[opt[2:]] = arg
         else:
@@ -104,24 +105,8 @@ def mytrim(s):
     temp = re.sub(' +', ' ', s)
     temp = re.sub('\n ', '\n', temp)
     temp = re.sub('\n+', '\n', temp)
-    return temp
-
-
-def insertEntity(cursor, data, opts):
-    sql = 'insert into '+opts['dataset']+'_info_entity (id, name, code, sabCode, sab, effectivetime) values ("%s","%s","%s","%s","%s","%s")' % (data['entityID'],mysqlformat(data['entityName']),data['code'],data['sabCode'], mysqlformat(data['sab']), data['effectiveTime'])
-    cursor.execute(sql)
-
-def insertProperty(cursor, data, opts):
-    sql = "select id from "+opts['dataset']+"_info_property where id = '"+str(data['id'])+"'"
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    if not result:
-        sql = 'insert into '+opts['dataset']+'_info_property (id, name, code, sabCode, sab) values ("%s","%s","%s","%s","%s")' % (data['id'],mysqlformat(data['name']),data['code'],data['sabCode'], mysqlformat(data['sab']))
-        cursor.execute(sql)
-
-def insertValue(cursor, data, opts):
-    sql = 'insert into '+opts['dataset']+'_info_value (entity_id, property_id,value) values ("%s","%s","%s")' % (data['entityID'],data['propertyID'],mysqlformat(data['value']))
-    cursor.execute(sql)
+    temp = temp.replace('\xc2\xa0', ' ')
+    return temp.strip(' \t\r\n\0')
 
 if __name__ == '__main__':
     main(sys.argv[1:])

@@ -52,7 +52,7 @@ def main(argv):
         print 'Error no data dir in', options['data']
         sys.exit(2)
 
-
+    options['loinc'] = getLoinc()
 
     fList = os.listdir(options['data'])
     length = len(fList)
@@ -81,19 +81,17 @@ def main(argv):
     for p in procs:
         p.join()
 
-    print 'done!'
-    time.sleep(2000)
-'''
-    for p in procs:
-        print p.pid, 'is terminating..'
-        if not p.is_alive():
-            p.terminate()
-            time.sleep(300)
-        if p.exitcode == -signal.SIGTERM:
-            print p.pid, 'is terminated'
-'''
     print 'Bye!'
-    exit(2)
+    exit(1)
+
+# get loinc map
+def getLoinc():
+    loinc = {}
+    fo = open('loinc.section','r')
+    for row in fo:
+        code, name = row.rstrip('\n').split('|')
+        loinc[code] = name
+    return loinc
 
 def f(pid, fl, opts):
     db = MySQLdb.connect(opts['dbhost'],opts['dbuser'],opts['dbpass'],opts['dbname'])
@@ -151,7 +149,7 @@ def f(pid, fl, opts):
                     db.commit()
  
     db.close()
-    return
+    exit(1)
 
 def component(cursor,opts, entityID,comp,flag):
     pdata = {'id':'','name':'','code':'','sabCode':'','sab':''}
@@ -161,13 +159,22 @@ def component(cursor,opts, entityID,comp,flag):
             for e in el:
                 if tag(e, 'code'):
                     attrs = e.attrib
-                    if not flag and 'code' in attrs and attrs['code'] != '34067-9':
+
+                    if not flag and 'code' in attrs and attrs['code'] not in opts['loinc'].keys():#'34067-9':
+                        print attrs['code'], 'not in'
                         break
                     else:
                         pdata['code'] = attrs['code']
                         pdata['sabCode'] = attrs['codeSystem']
                         pdata['sab'] = attrs['displayName']
-                        flag = True
+                        # put loinc name
+                        if flag:
+                            pdata['loinc'] = opts['curLoinc']
+                        else:
+                            pdata['loinc'] = opts['loinc'][attrs['code']]
+                            opts['curLoinc'] = pdata['loinc']
+                            flag = True
+                        print attrs['code'], 'in', pdata['loinc']
                 elif tag(e, 'component'):
                     # recursive
                     component(cursor, opts, entityID, e, flag)
@@ -187,13 +194,14 @@ def component(cursor,opts, entityID,comp,flag):
         # TODO insert into property and value table
         # propertyid hash of all
         try:
-            pdata['id'] = hash(pdata['name']+pdata['code']+pdata['sabCode'])
+            pdata['id'] = hash(pdata['loinc']+pdata['name']+pdata['code']+pdata['sabCode'])
             vdata['propertyID'] = pdata['id']
             if pdata['id'] != 0:
                 insertProperty(cursor, pdata, opts)
                 insertValue(cursor, vdata, opts)
         except Exception as e:
             print 'ERROR p', e,len(pdata['name'])
+        
 
 
 def insertEntity(cursor, data, opts):
@@ -205,7 +213,7 @@ def insertProperty(cursor, data, opts):
     cursor.execute(sql)
     result = cursor.fetchone()
     if not result:
-        sql = 'insert into '+opts['dataset']+'_info_property (id, name, code, sabCode, sab) values ("%s","%s","%s","%s","%s")' % (data['id'],mysqlformat(data['name']),data['code'],data['sabCode'], mysqlformat(data['sab']))
+        sql = 'insert into '+opts['dataset']+'_info_property (id, loinc, name, code, sabCode, sab) values ("%s","%s","%s","%s","%s","%s")' % (data['id'],data['loinc'],mysqlformat(data['name']),data['code'],data['sabCode'], mysqlformat(data['sab']))
         cursor.execute(sql)
 
 def insertValue(cursor, data, opts):
@@ -226,7 +234,14 @@ def stringfy(el):
 
 def mysqlformat(value):
     temp = re.sub(r'"','',value)
-    return re.sub(r"'",'',temp)
+    return mytrim(re.sub(r"'",'',temp))
+
+def mytrim(s):
+    temp = re.sub(' +', ' ', s)
+    temp = re.sub('\n ', '\n', temp)
+    temp = re.sub('\n+', '\n', temp)
+    return temp.strip(' \t\r\n\0')
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])
