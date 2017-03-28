@@ -150,6 +150,9 @@ FROM ((spl_other_info_entity e join spl_other_info_value v on((e.id = v.entity_i
 - DailyMed
   - https://dailymed.nlm.nih.gov/dailymed/spl-resources-all-drug-labels.cfm
 
+- SPL Rxnorm mappings
+  - https://dailymed.nlm.nih.gov/dailymed/spl-resources-all-mapping-files.cfm
+
 ## Others
 
 - sqldump
