@@ -174,12 +174,12 @@ FROM ((spl_other_info_entity e join spl_other_info_value v on((e.id = v.entity_i
   - add index.php in request
 
   ```
-  <IfModule mod_rewrite.c>
+  \<IfModule mod_rewrite.c\>
     RewriteEngine On
     #RewriteBase /
     RewriteCond %{REQUEST_FILENAME} !-d
     #RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [QSA,L]
-  </IfModule>
+  \</IfModule\>
   ```
   
