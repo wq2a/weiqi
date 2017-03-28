@@ -138,7 +138,7 @@ $ source .bash_profile
 
 - group eav table
 
-  ```
+  ```SQL
   SET @@group_concat_max_len = 99999;
   CREATE table spl_other_info
 SELECT e.id AS id, e.name AS name, group_concat(p.name separator '|') AS property_all, group_concat(v.value separator '  ') AS content_all 
