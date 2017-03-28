@@ -153,6 +153,9 @@ $ source .bash_profile
 - SPL Rxnorm mappings
   - https://dailymed.nlm.nih.gov/dailymed/spl-resources-all-mapping-files.cfm
 
+- LOINC section headings
+  - https://www.fda.gov/ForIndustry/DataStandards/StructuredProductLabeling/ucm162057.htm
+
 ## Others
 
 - sqldump
