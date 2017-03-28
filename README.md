@@ -141,8 +141,8 @@ $ source .bash_profile
   ```SQL
   SET @@group_concat_max_len = 99999;
   CREATE table spl_other_info
-SELECT e.id AS id, e.name AS name, group_concat(p.name separator '|') AS property_all, group_concat(v.value separator '  ') AS content_all 
-FROM ((spl_other_info_entity e join spl_other_info_value v on((e.id = v.entity_id))) join spl_other_info_property p on((v.property_id = p.id))) group by e.id,e.name;
+  SELECT e.id AS id, e.name AS name, group_concat(p.name separator '|') AS property_all, group_concat(v.value separator '  ') AS content_all 
+  FROM ((spl_other_info_entity e join spl_other_info_value v on((e.id = v.entity_id))) join spl_other_info_property p on((v.property_id = p.id))) group by e.id,e.name;
   ```
 
 ## SPL
