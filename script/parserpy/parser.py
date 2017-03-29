@@ -137,9 +137,11 @@ def f(pid, fl, opts):
                         elif tag(el, 'component'):
                             for subel in el:
                                 if tag(subel, 'structuredBody'):
+                                    opts['hierarchy'] = [0]
                                     for e in subel:
                                         if tag(e, 'component'):
                                             component(cursor, opts, data['entityID'],e,False)
+                                            opts['hierarchy'][-1] += 1
                     #TODO insert into entity table
                     try:
                         insertEntity(cursor, data, opts)
@@ -177,7 +179,10 @@ def component(cursor,opts, entityID,comp,flag):
                         print attrs['code'], 'in', pdata['loinc']
                 elif tag(e, 'component'):
                     # recursive
-                    component(cursor, opts, entityID, e, flag)
+                    newOpts = opts
+                    newOpts['hierarchy'].append(0)
+                    component(cursor, newOpts, entityID, e, flag)
+                    opts['hierarchy'][-1] += 1
                 elif tag(e, 'id'):
                     # ignored
                     ddd = ''
@@ -190,10 +195,14 @@ def component(cursor,opts, entityID,comp,flag):
                 else:
                     vdata['value'] += stringfy(e)
     if flag:
-        #print '+++',code,'+',sab, '+', sabCode, '+', propertyName,'===', value
         # TODO insert into property and value table
         # propertyid hash of all
         try:
+            pdata = myformat(pdata)
+            temp = hash(pdata['name']+pdata['code']+pdata['sabCode'])
+            # no value need to insert
+            if temp == 0:
+                return
             pdata['id'] = hash(pdata['loinc']+pdata['name']+pdata['code']+pdata['sabCode'])
             vdata['propertyID'] = pdata['id']
             if pdata['id'] != 0:
@@ -205,19 +214,27 @@ def component(cursor,opts, entityID,comp,flag):
 
 
 def insertEntity(cursor, data, opts):
-    sql = 'insert into '+opts['dataset']+'_info_entity (id, name, code, sabCode, sab, effectivetime) values ("%s","%s","%s","%s","%s","%s")' % (data['entityID'],mysqlformat(data['entityName']),data['code'],data['sabCode'], mysqlformat(data['sab']), data['effectiveTime'])
+    data = myformat(data)
+    sql = 'insert into '+opts['dataset']+'_info_entity (id, name, code, sabCode, sab, effectivetime) values ("%s","%s","%s","%s","%s","%s")' % (data['entityID'],data['entityName'],data['code'],data['sabCode'], data['sab'], data['effectiveTime'])
     cursor.execute(sql)
 
 def insertProperty(cursor, data, opts):
-    sql = "select id from "+opts['dataset']+"_info_property where id = '"+str(data['id'])+"'"
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    if not result:
-        sql = 'insert into '+opts['dataset']+'_info_property (id, loinc, name, code, sabCode, sab) values ("%s","%s","%s","%s","%s","%s")' % (data['id'],data['loinc'],mysqlformat(data['name']),data['code'],data['sabCode'], mysqlformat(data['sab']))
+    data = myformat(data)
+    #sql = "select id from "+opts['dataset']+"_info_property where id = '"+str(data['id'])+"'"
+    #cursor.execute(sql)
+    #result = cursor.fetchone()
+    #if not result:
+    # insert property anyway, it is expected to fail if property exist.
+    try:
+        sql = 'insert into '+opts['dataset']+'_info_property (id, loinc, name, code, sabCode, sab) values ("%s","%s","%s","%s","%s","%s")' % (data['id'],data['loinc'],data['name'],data['code'],data['sabCode'], data['sab'])
         cursor.execute(sql)
+    except:
+        print 'property exist.'
 
 def insertValue(cursor, data, opts):
-    sql = 'insert into '+opts['dataset']+'_info_value (entity_id, property_id,value) values ("%s","%s","%s")' % (data['entityID'],data['propertyID'],mysqlformat(data['value']))
+    data = myformat(data)
+    hierarchy = ','.join(str(l) for l in opts['hierarchy'])
+    sql = 'insert into '+opts['dataset']+'_info_value (entity_id, property_id,hierarchy,value) values ("%s","%s","%s","%s")' % (data['entityID'],data['propertyID'],hierarchy,data['value'])
     cursor.execute(sql)
  
 def tag(el,tag):
@@ -228,18 +245,28 @@ def realTag(el):
     
 def stringfy(el):
     if len(el.getchildren())==0 and el.text:
-        return el.text
-    parts = ([el.text] + list(chain(*([c.text, re.sub(r'<[^>]*>|\[[^\]]*\]','',etree.tostring(c)).strip('\t\n\r'),c.tail] for c in el.getchildren())))+[el.tail])
+        return myformat(el.text)
+    parts = ([myformat(el.text)] + list(chain(*([myformat(c.text), re.sub(r'<[^>]*>|\[[^\]]*\]','',myformat(etree.tostring(c))),c.tail] for c in el.getchildren())))+[el.tail])
     return ''.join(filter(None, parts))
+
+def myformat(data):
+    if isinstance(data, dict):
+        for key in data:
+            if isinstance(data[key],str):
+                data[key] = mysqlformat(data[key])
+    else:
+        if isinstance(data,str):
+            data = mysqlformat(data)
+    return data
 
 def mysqlformat(value):
     temp = re.sub(r'"','',value)
     return mytrim(re.sub(r"'",'',temp))
 
 def mytrim(s):
-    temp = re.sub(' +', ' ', s)
-    temp = re.sub('\n ', '\n', temp)
-    temp = re.sub('\n+', '\n', temp)
+    temp = re.sub(r' +', ' ', s)
+    temp = re.sub(r'\n ', '\n', temp)
+    temp = re.sub(r'\n+', '\n', temp)
     return temp.strip(' \t\r\n\0')
 
 
