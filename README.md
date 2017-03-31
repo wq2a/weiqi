@@ -81,6 +81,10 @@ $ source .bash_profile
   ```
     export LD_LIBRARY_PATH="/app001/opt/apps/semrep/public_semrep/lib:$LD_LIBRARY_PATH";
   ```
+- How to run
+  - add semrep link to public_semrep/bin/semrep.v1.7
+  - https://semrep.nlm.nih.gov/SemRep.v1.7_Options.html 
+  - semrep -L 2015 -Z 2015 -M -F -E MY_DATA/test.txt
 
 #### MetaMap
 
