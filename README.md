@@ -75,6 +75,12 @@ $ source .bash_profile
 
 - install semrep
   - https://semrep.nlm.nih.gov/SemRep.v1.7_Installation.html
+- Problems
+  - if libpcre.so.0 is missing add lib path, and make link libpcre.so.0 point to libpcre.so.0.0.1
+
+  ```
+    export LD_LIBRARY_PATH="/app001/opt/apps/semrep/public_semrep/lib:$LD_LIBRARY_PATH";
+  ```
 
 #### MetaMap
 
