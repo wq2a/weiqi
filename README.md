@@ -166,6 +166,98 @@ $ source .bash_profile
 - LOINC section headings
   - https://www.fda.gov/ForIndustry/DataStandards/StructuredProductLabeling/ucm162057.htm
 
+- spl-Rxnorm mapping
+  ```SQL
+  create table spl_rxnorm_mapping (
+    setid varchar(100),
+    spl_version int,
+    rxcui varchar(10),
+    rxstring varchar(255),
+    rxtty varchar(10)
+  );
+
+  CREATE TABLE `ENTITY` (
+    `ENTITY_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `SENTENCE_ID` int(10) unsigned NOT NULL,
+    `CUI` char(8) DEFAULT NULL,
+    `NAME` varchar(999) DEFAULT NULL,
+    `SEMTYPE` varchar(30) DEFAULT NULL,
+    `GENE_ID` varchar(30) DEFAULT NULL,
+    `GENE_NAME` varchar(100) DEFAULT NULL,
+    `TEXT` varchar(999) DEFAULT NULL,
+    `SCORE` int(11) DEFAULT NULL,
+    `START_INDEX` int(11) DEFAULT NULL,
+    `END_INDEX` int(11) DEFAULT NULL,
+    PRIMARY KEY (`ENTITY_ID`),
+    KEY `ENTITY_ibfk_1` (`SENTENCE_ID`),
+    CONSTRAINT `ENTITY_ibfk_1` FOREIGN KEY (`SENTENCE_ID`) REFERENCES `SENTENCE` (`SENTENCE_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  ) ENGINE=InnoDB AUTO_INCREMENT=1000010 DEFAULT CHARSET=utf8 COMMENT='Stores entity from SPL';
+  
+  CREATE TABLE `PREDICATION` (
+    `PREDICATION_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `SENTENCE_ID` int(10) unsigned NOT NULL,
+    `PMID` varchar(20) DEFAULT NULL,
+    `PREDICATE` varchar(50) DEFAULT NULL,
+    `SUBJECT_CUI` varchar(255) DEFAULT NULL,
+    `SUBJECT_NAME` varchar(999) DEFAULT NULL,
+    `SUBJECT_SEMTYPE` varchar(50) DEFAULT NULL,
+    `SUBJECT_NOVELTY` tinyint(1) DEFAULT NULL,
+    `OBJECT_CUI` varchar(255) DEFAULT NULL,
+    `OBJECT_NAME` varchar(999) DEFAULT NULL,
+    `OBJECT_SEMTYPE` varchar(50) DEFAULT NULL,
+    `OBJECT_NOVELTY` tinyint(1) DEFAULT NULL,
+    PRIMARY KEY (`PREDICATION_ID`),
+    KEY `SENTENCE_ID` (`SENTENCE_ID`),
+    KEY `pmid_index_btree` (`PMID`) USING BTREE,
+    CONSTRAINT `PREDICATION_ibfk_1` FOREIGN KEY (`SENTENCE_ID`) REFERENCES `SENTENCE` (`SENTENCE_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `PREDICATION_ibfk_2` FOREIGN KEY (`PMID`) REFERENCES `SENTENCE` (`PMID`) ON DELETE CASCADE ON UPDATE CASCADE
+  ) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8 COMMENT='Stores aggregate info of semantic predications';
+  
+  CREATE TABLE `PREDICATION_AUX` (
+    `PREDICATION_AUX_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `PREDICATION_ID` int(10) unsigned NOT NULL,
+    `SUBJECT_TEXT` varchar(200) DEFAULT '' COMMENT 'Should be NOT NULL eventually',
+    `SUBJECT_DIST` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `SUBJECT_MAXDIST` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `SUBJECT_START_INDEX` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `SUBJECT_END_INDEX` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `SUBJECT_SCORE` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `INDICATOR_TYPE` varchar(10) DEFAULT '' COMMENT 'Should be NOT NULL eventually',
+    `PREDICATE_START_INDEX` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `PREDICATE_END_INDEX` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `OBJECT_TEXT` varchar(200) DEFAULT '' COMMENT 'Should be NOT NULL eventually',
+    `OBJECT_DIST` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `OBJECT_MAXDIST` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `OBJECT_START_INDEX` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `OBJECT_END_INDEX` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `OBJECT_SCORE` int(10) unsigned DEFAULT '0' COMMENT 'Should be NOT NULL eventually',
+    `CURR_TIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`PREDICATION_AUX_ID`),
+    KEY `PREDICATION_ID` (`PREDICATION_ID`),
+    CONSTRAINT `PREDICATION_AUX_ibfk_1` FOREIGN KEY (`PREDICATION_ID`) REFERENCES `PREDICATION` (`PREDICATION_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  ) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8 COMMENT='Stores semantic predications in sentences';
+  
+  CREATE TABLE `SEMANTIC_TYPE_2015AA` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `semantic_name` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
+    `semantic_type` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
+    PRIMARY KEY (`id`)
+  ) ENGINE=MyISAM AUTO_INCREMENT=136 DEFAULT CHARSET=utf8;
+  
+  CREATE TABLE `SENTENCE` (
+    `SENTENCE_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `PMID` varchar(20) NOT NULL DEFAULT '',
+    `TYPE` varchar(2) NOT NULL DEFAULT '',
+    `NUMBER` int(10) unsigned NOT NULL DEFAULT '0',
+    `SENTENCE` text NOT NULL,
+    PRIMARY KEY (`SENTENCE_ID`),
+    UNIQUE KEY `SENTENCE` (`PMID`,`TYPE`,`NUMBER`),
+    KEY `PMID_INDEX` (`PMID`) USING BTREE,
+    KEY `PMID_HASH` (`PMID`) USING HASH
+  ) ENGINE=InnoDB AUTO_INCREMENT=100000008 DEFAULT CHARSET=utf8 COMMENT='Stores sentences from SPL';
+  ```
+
+
 ## Others
 
 - sqldump
