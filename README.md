@@ -153,6 +153,19 @@ $ source .bash_profile
   CREATE table spl_other_info
   SELECT e.id AS id, e.name AS name, group_concat(p.name separator '|') AS property_all, group_concat(v.value separator '  ') AS content_all 
   FROM ((spl_other_info_entity e join spl_other_info_value v on((e.id = v.entity_id))) join spl_other_info_property p on((v.property_id = p.id))) group by e.id,e.name;
+
+  SET @@group_concat_max_len = 9999999;
+  CREATE table mp_icd910_info
+  SELECT e.id AS id, e.link AS source, group_concat(p.name separator '|') AS property_all, group_concat(v.value separator '  ') AS content_all, CURRENT_TIMESTAMP as timestamp 
+  FROM ((mp_icd910_info_entity e join mp_icd910_info_value v on((e.id = v.entity_id))) join mp_icd910_info_property p on((v.property_id = p.id))) group by e.id,e.link;
+  ```
+
+- diff entity
+
+  ```SQL
+  create table mp_icd910_diff 
+  select j.id, j.link 
+  from (select e.id, e.link,i.property_all as p from mp_icd910_info_entity e left join mp_icd910_info i on (e.id=i.id)) j where j.p is null;
   ```
 
 ## SPL
