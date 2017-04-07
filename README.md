@@ -154,10 +154,12 @@ $ source .bash_profile
   SELECT e.id AS id, e.name AS name, group_concat(p.name separator '|') AS property_all, group_concat(v.value separator '  ') AS content_all 
   FROM ((spl_other_info_entity e join spl_other_info_value v on((e.id = v.entity_id))) join spl_other_info_property p on((v.property_id = p.id))) group by e.id,e.name;
 
+  -- mp_icd910_info_property_view is the properties we need to show in the info table
+  -- mp_icd910_info_property_view created from mp_icd910_info_property, and remove certain properties
   SET @@group_concat_max_len = 9999999;
   CREATE table mp_icd910_info
-  SELECT e.id AS id, e.link AS source, group_concat(p.name separator '|') AS property_all, group_concat(v.value separator '  ') AS content_all, CURRENT_TIMESTAMP as timestamp 
-  FROM ((mp_icd910_info_entity e join mp_icd910_info_value v on((e.id = v.entity_id))) join mp_icd910_info_property p on((v.property_id = p.id))) group by e.id,e.link;
+  SELECT e.id AS id, e.link AS source, group_concat(p.name separator '|') AS property_all, group_concat(v.value separator '\r\n') AS content_all, CURRENT_TIMESTAMP as timestamp 
+  FROM ((mp_icd910_info_entity e join mp_icd910_info_value v on((e.id = v.entity_id))) join mp_icd910_info_property_view p on((v.property_id = p.id))) group by e.id,e.link;
   ```
 
 - diff entity
