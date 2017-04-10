@@ -149,7 +149,7 @@ $ source .bash_profile
 - group eav table
 
   ```SQL
-  SET @@group_concat_max_len = 99999;
+  SET @@group_concat_max_len = 9999999;
   CREATE table spl_other_info
   SELECT e.id AS id, e.name AS name, group_concat(p.name separator '|') AS property_all, group_concat(v.value separator '  ') AS content_all 
   FROM ((spl_other_info_entity e join spl_other_info_value v on((e.id = v.entity_id))) join spl_other_info_property p on((v.property_id = p.id))) group by e.id,e.name;
@@ -160,6 +160,39 @@ $ source .bash_profile
   CREATE table mp_icd910_info
   SELECT e.id AS id, e.link AS source, group_concat(p.name separator '|') AS property_all, group_concat(v.value separator '\r\n') AS content_all, CURRENT_TIMESTAMP as timestamp 
   FROM ((mp_icd910_info_entity e join mp_icd910_info_value v on((e.id = v.entity_id))) join mp_icd910_info_property_view p on((v.property_id = p.id))) group by e.id,e.link;
+
+  -- type of entity_id should be both unsign or signed
+  alter table mp_icd910_info_value add constraint foreign key(entity_id) references mp_icd910_info_entity (id) on update cascade on delete cascade; 
+
+  -- 
+  -- select all entity ID with certain property name
+  create table spl_prescription_all_has_ADVERSE_info
+  select distinct(v.entity_id) as entity_id
+  from spl_prescription_all_info_value v
+  join (select id from spl_prescription_all_info_property where loinc='ADVERSE REACTIONS SECTION') p
+  on (v.property_id=p.id);
+
+  -- select all values with certain entity ID
+  create table spl_prescription_all_info_20
+  select t.id as source, s.value, p.loinc
+  from (select entity_id as id from spl_prescription_all_has_ADVERSE_info limit 20) t
+  join spl_prescription_all_info_value s
+  on (s.entity_id=t.id) join spl_prescription_all_info_property p
+  on (s.property_id=p.id);
+
+  -- concat values
+  SET @@group_concat_max_len = 9999999;
+  create table spl_prescription_all_20_info
+  select source,group_concat(value) as content_all
+  from spl_prescription_all_info_20
+  group by source;
+
+  -- concat values by property name
+  create table spl_prescription_all_20_adverse_info
+  select source, group_concat(value) as content_all
+  from spl_prescription_all_info_20
+  where loinc = 'ADVERSE REACTIONS SECTION'
+  group by source;
   ```
 
 - diff entity
