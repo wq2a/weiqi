@@ -1,0 +1,199 @@
+NOTE: Phrases for subject and object concepts are enclosed with "{" and "}" The indicator for the predicate is marked with "<" and ">".
+
+ADMINISTERED_TO: Given to an entity, when no assertion is made that the substance or procedure is being given as treatment. 
+	EXAMPLE:
+		{Patients} with single brain lesion <received> an extra 3 Gy x 5 {radiotherapy} ...
+	OUTPUT PREDICATE:
+		C0034618: Radiation therapy (Therapeutic or Preventive Procedure)-ADMINISTERED_TO-C0030705: Patients (Human) 
+
+AFFECTS: Produces a direct effect on. Implied here is the altering or influencing of an existing condition, state, situation, or entity. 
+	This includes has a role in, alters, influences, predisposes, catalyzes, stimulates, regulates, depresses, impedes, enhances, 
+	contributes to, leads to, and modifies. 
+	EXAMPLE:
+		{BAP31} and its caspase cleavage product <regulate> cell surface expression of tetraspanins and integrin-mediated {cell survival}.
+	OUTPUT PREDICATE
+		C1424489: BCAP31 gene (Gene or Genome)-AFFECTS-C0007620: Cell Survival (Cell Function)
+	
+ASSOCIATED_WITH: Has a relationship to (gene-disease relation). 
+	EXAMPLE:
+		{EP2} plays a critical <role> in {tumorigenesis} in mouse mammary gland ...
+	OUTPUT PREDICATE:
+		C1419062: PTGER2 gene (Gene or Genome)-ASSOCIATED_WITH-C1326912: Tumorigenesis (Neoplastic Process)
+	
+AUGMENTS: Expands or stimulates a process.
+	EXAMPLE:
+		{Nicotine} <induces> {conditioned place preferences} over a large range of doses in rats.
+	OUTPUT PREDICATE:
+		C0028040: Nicotine (Organic Chemical)-AUGMENTS-C0815102: place preference learning (Mental Process) 
+
+CAUSES: Brings about a condition or an effect. Implied here is that an agent, such as for example, a pharmacologic substance or an organism, 
+	has brought about the effect. This includes induces, effects, evokes, and etiology. 
+	EXAMPLE:
+		{Neurocysticercosis} (NCC) is one of the major <causes> of {neurological disease} ...
+	OUTPUT PREDICATE:
+		C0338437:Neurocysticercosis (Disease or Syndrome)-CAUSES-C0027765: nervous system disorder (Disease or Syndrome)
+		
+COEXISTS_WITH: Occurs together with, or jointly. 
+	EXAMPLE:
+		Food intolerance-related {constipation} is <characterized by> {proctitis}. 
+	OUTPUT PREDICATE:
+		C0009806: Constipation (Sign or Symptom)-COEXISTS_WITH-C0033246: Proctitis (Disease or Syndrome)
+
+CONVERTS_TO: Changes from one form to another (both substances). 
+	EXAMPLE:
+		...plasma {nitrite} is readily <oxidized to> {nitrate} within plasma ...
+	OUTPUT PREDICATE:
+		C0028137: Nitrites (Chemical Viewed Structurally)-CONVERTS_TO-C0699857: Nitrate (Inorganic Chemical)
+		
+COMPLICATES: Causes to become more severe or complex, or results in adverse effects. 
+	EXAMPLE:
+		{Infections} can trigger GBS and <exacerbate> {CIDP}.
+	OUTPUT PREDICATE:
+		C0021311: Infection (Disease or Syndrome)- COMPLICATES-C0393819: Polyradiculoneuropathy, Chronic Inflammatory Demyelinating (Disease or Syndrome)
+		
+DIAGNOSES: Distinguishes or identifies the nature or characteristics of. 
+	EXAMPLE:
+		{Manometry} <showed> a higher {anal sphincter resting pressure} ...
+	OUTPUT PREDICATE:
+		C0024751: Manometry (Laboratory Procedure)-DIAGNOSES-C0429217: Anal sphincter pressure (Finding)
+		
+DISRUPTS: Alters or influences an already existing condition, state, or situation. Produces a negative effect on. 
+	EXAMPLE:
+		Overexpression of {NF-kappaB} <inhibits> tumor cell {apoptosis}.
+	OUTPUT PREDICATE:
+		C0079904: NF-kappaB (Amino Acid, Peptide, or Protein)-DISRUPTS- C0162638: Apoptosis (Cell Function)
+		
+INHIBITS: Decreases, limits, or blocks the action or function of (substance interaction).  
+	EXAMPLE:
+		In recent studies, the {BDNF} expression was <reduced> by typical {neuroleptics}.
+	OUTPUT PREDICATE:
+		C0040615: Antipsychotic Agents (Pharmacologic Substance)-INHIBITS-C0107103: Brain-Derived Neurotrophic Factor (Biologically Active Substance)
+
+INTERACTS_WITH: Substance interaction. 
+	EXAMPLE:
+		Here we show that {chymases}, which are chymotryptic peptidases secreted by mast cells, <hydrolyze> {HGF} ...
+	OUTPUT PREDICATE:
+		C0055673: Chymase (Enzyme)-INTERACTS_WITH-C0062534: Hepatocyte Growth Factor (Amino Acid, Peptide, or Protein)
+
+ISA: The basic hierarchical link in the UMLS Semantic Network. If one item isa another item then the first item is more specific in meaning than the second item. 
+	EXAMPLE:
+		The sympathetic <{neurotransmitter} {norepinephrine}> has been found ...
+	OUTPUT PREDICATE:
+		C0028351: Norepinephrine (Neuroreactive Substance or Biogenic Amine)-ISA-C0027908: Neurotransmitters (Neuroreactive Substance or Biogenic Amine)
+
+LOCATION_OF: The position, site, or region of an entity or the site of a process. 
+	EXAMPLE:
+		We report a case of primary cardiac {epithelioid hemangioendothelioma} <arising from> the {right atrium} of a 2-month-old infant.
+	OUTPUT PREDICATE:
+		C1269890: Entire right atrium (Body Part, Organ, or Organ Component)-LOCATION_OF-C0206732: Hemangioendothelioma, Epithelioid (Neoplastic Process)
+
+MANIFESTATION_OF: That part of a phenomenon which is directly observable or concretely or visibly expressed, or which gives evidence to the underlying process. 
+	This includes expression of, display of, and exhibition of. 
+	EXAMPLE:
+		Recurrence of {glomerulopathy} <underlying> {ESRD} was frequent for IgAN, FSG ...
+	OUTPUT PREDICATE:
+		C1261469: End stage renal failure (Disease or Syndrome)-MANIFESTATION_OF-C1398810: glomerulopathy (Disease or Syndrome)
+		
+METHOD_OF: The manner and sequence of events in performing an act or procedure.
+	EXAMPLE:
+		... because of the <use> of {SSCP} as a {screening method} and sequencing only a part of TSHR exon 10.
+	OUTPUT PREDICATE:
+		C0243031: Single-Stranded Conformational Polymorphism (Laboratory or Test Result)-METHOD_OF-C0220908:Screening procedure  (Health Care Activity)
+
+OCCURS_IN: Has incidence in a group or population. 
+	EXAMPLE:
+		{Older populations} are more <prone> to {bone loss} with weight loss ...
+	OUTPUT PREDICATE:
+		C0599877: loss; bone (Pathologic Function)-OCCURS_IN-C1518563: Older Population (Human)
+
+PART_OF: Composes, with one or more other physical units, some larger whole. This includes component of, division of, portion of, fragment of, section of, and layer of. 
+	EXAMPLE:
+		The probasal bodies and {microtubules} <within> the {blepharoplast cavities}...
+	OUTPUT PREDICATE:
+		C0026046: Microtubules (Cell Component)-PART_OF-C0230744: Basal body of cilium or flagellum, not bacterial (Cell Component)
+
+PRECEDES: Occurs earlier in time. This includes antedates, comes before, is in advance of, predates, and is prior to.
+	EXAMPLE:
+		... the risk of tissue plasminogen activator-induced {hemorrhagic transformation} <following> {ischemic stroke} in mice ...
+	OUTPUT PREDICATE:
+		C0948008: Ischemic stroke (Disease or Syndrome)-PRECEDES-C1096400: Haemorrhagic transformation stroke (Disease or Syndrome)
+
+PREDISPOSES: To be a risk to a disorder, pathology, or condition. 
+	EXAMPLE:
+		... high {ghrelin} levels <contribute to> {obesity} in Prader-Willi syndrome (PWS) ...
+	OUTPUT PREDICATE:
+		C0911014: ghrelin (Amino Acid, Peptide, or Protein)-PREDISPOSES-C0028754: Obesity (Disease or Syndrome)
+
+PREVENTS: Stops, hinders or eliminates an action or condition. 
+	EXAMPLE:
+		{Ipsapirone} and ketanserin <protects against> circulatory shock, {intracranial hypertension}, and cerebral ischemia during heatstroke.
+	OUTPUT PREDICATE:
+		C0123905: ipsapirone (Pharmacologic Substance)-PREVENTS-C0151740: Intracranial Hypertension (Disease or Syndrome)
+
+PROCESS_OF: Disorder occurs in (higher) organism. 
+	EXAMPLE:
+		... no information is available in <{CAD} {patients}> with normal glomerular filtration rate (GFR).
+	OUTPUT PREDICATE:
+		C0010054: Coronary Arteriosclerosis (Disease or Syndrome)- PROCESS_OF- C0030705: Patients (Human)
+
+PRODUCES: Brings forth, generates or creates. This includes yields, secretes, emits, biosynthesizes, generates, releases, discharges, and creates.
+	EXAMPLE:
+		Human {EPCs} <express> functional {PAR-1}...
+	OUTPUT PREDICATE:
+		C0038250: Stem cells (Cell)-PRODUCES-C0668084:Receptor, PAR-1 (Amino Acid, Peptide, or Protein)
+
+STIMULATES: Increases or facilitates the action or function of (substance interaction). 
+	EXAMPLE:
+		{Candesartan} therapy significantly reduced inflammation and <increased> {adiponectin} levels ...
+	OUTPUT PREDICATE:
+		C0717550: candesartan (Pharmacologic Substance)-STIMULATES-C0389071: Adiponectin (Amino Acid, Peptide, or Protein)
+
+TREATS: Applies a remedy with the object of effecting a cure or managing a condition. 
+	EXAMPLE:
+		This study initially surveyed 163 patients with clinical stage Ib or IIa {cervical adenocarcinoma} <treated> with {radical hysterectomy} 
+		and pelvic lymphadenectomy.
+	OUTPUT PREDICATE:
+		C0677962: Radical hysterectomy (Therapeutic or Preventive Procedure)-TREATS-C0279672: Cervical Adenocarcinoma (Neoplastic Process)
+
+USES: Employs in the carrying out of some activity. This includes applies, utilizes, employs, and avails.
+	EXAMPLE:
+		Pre-emptive {therapy} <with> oral {valganciclovir} for CMV infections ...
+	OUTPUT PREDICATE:
+		C0087111: Therapeutic procedure (Therapeutic or Preventive Procedure)-USES- C0909381: valganciclovir (Pharmacologic Substance)
+
+COMPARED_WITH: Comparative predicate.
+	EXAMPLE:
+		<Compared with> {placebo}, {candesartan} therapy significantly lowered plasma hsCRP levels ...
+	OUTPUT PREDICATE:
+		C0032042: Placebos (Medical Device)-COMPARED_WITH-C0717550: candesartan (Pharmacologic Substance)
+
+HIGHER_THAN: Comparative predicate.
+	EXAMPLE:
+		{Losartan} was <more effective than> {atenolol} in reducing cardiovascular morbidity...
+	OUTPUT PREDICATE:
+		C0126174: Losartan (Organic Chemical)-HIGHER_THAN-C0004147: Atenolol (Organic Chemical)
+
+LOWER_THAN: Comparative predicate.
+	EXAMPLE:
+		{Amoxicillin-clavulanate} was <not as effective as> {ciprofloxacin} for treating uncomplicated bladder infection in women.
+	OUTPUT PREDICATE:
+		C0054066: Amoxicillin-Potassium Clavulanate Combination (Antibiotics)-LOWER_THAN-C0008809: Ciprofloxacin (Pharmacologic Substance)
+
+SAME_AS: Comparative predicate.
+	EXAMPLE:
+		{Candesartan} is <as effective as> {lisinopril} once daily in reducing blood pressure. 
+	OUTPUT PREDICATE:
+		C0717550: candesartan (Organic Chemical)-SAME_AS-C0065374: Lisinopril (Amino Acid, Peptide, or Protein)
+
+Predicate Types Abbreviations and Definitions: 
+	VERB: verbal predicates 
+	NOM: nominalizations or other argument-taking nouns
+	ADJ: adjectival predicates
+	PREP: prepositional predicates
+	AUX: auxiliary verb predicates
+	PART: past participial predicates
+	MOD/HEAD: the predication is the result of a noun phrase construction
+	SPEC: the predication is hypernymic and must be licensed by the UMLS Metathesaurus hierarchy, 
+	      that is, the subject must be a descendant of the object in the UMLS Metathesaurus  hierarchy
+	INFER: the predication is the result of inference based on two other existing predications
+	COMPLEX: the indicator is a multi-word expression (e.g., "decrease the risk"), but not a multi-word lexical item (e.g., "risk factor").
