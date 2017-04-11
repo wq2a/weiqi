@@ -71,6 +71,13 @@ $ source .bash_profile
 
 ## Framework
 
+### KM
+
+- result structure
+  - cui,cuipn,styp,sentnum,wordnum,score,attr, orig_phrase_text,section_string
+  - 205178|Acuteness (qualifier value)|Temporal Concept|1|4|1.25882352941176||briefly acute|
+
+
 ### SemRep (Semantic Knowledge Representation)
 
 - install semrep
