@@ -128,6 +128,21 @@ $ source .bash_profile
     ESCAPECHAR '\'
   );
   ```
+
+  - export script
+
+  ```
+  create external table '/Users/wanjiang/Desktop/test123.csv'
+  using
+  ( DELIMITER '|'
+    REMOTESOURCE 'JDBC'
+    LOGDIR '/Users/wanjiang/Desktop/'
+    ENCODING 'internal'
+    ESCAPECHAR '\')
+  as
+  select * from sd_cc_statins;
+  ```
+
   - concepts table
 
   ```
