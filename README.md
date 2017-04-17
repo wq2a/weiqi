@@ -68,6 +68,10 @@ $ source .bash_profile
 - get the section list
 - https://en.wikipedia.org/w/api.php?action=parse&prop=sections&page=Weight_loss&format=json
 
+### OMIM
+
+- https://omim.org/
+- https://omim.org/entry/600145
 
 ## Framework
 
