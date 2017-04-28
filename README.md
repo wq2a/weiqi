@@ -72,6 +72,11 @@ $ source .bash_profile
 
 - https://omim.org/
 - https://omim.org/entry/600145
+- API
+  - https://omim.org/help/api
+  - https://api.omim.org/api/entry?format=json&mimNumber=100050&include=text,allelicVariantList&apiKey=XXXXX
+
+
 
 ## Framework
 
@@ -229,12 +234,6 @@ $ source .bash_profile
   from (select e.id, e.link,i.property_all as p from mp_icd910_info_entity e left join mp_icd910_info i on (e.id=i.id)) j where j.p is null;
   ```
 
-
-## OMIM
-
-- API
-  - https://omim.org/help/api
-  - https://api.omim.org/api/entry?format=json&mimNumber=100050&include=text,allelicVariantList&apiKey=XXXXX
 
 ## SPL
 
