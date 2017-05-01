@@ -337,6 +337,59 @@ $ source .bash_profile
   ) ENGINE=InnoDB AUTO_INCREMENT=100000008 DEFAULT CHARSET=utf8 COMMENT='Stores sentences from SPL';
   ```
 
+## Analysis
+
+- DF and TF
+
+```SQL
+create table wiki_rxnorm_analysis_concepts_byDoc
+AS SELECT
+source, cui, count(0) AS freqs_in_doc
+FROM wiki_rxnorm_concepts_data group by source,cui;
+
+create table wiki_rxnorm_analysis_counts_byDoc
+AS SELECT
+   source,count(0) AS counts_in_doc
+FROM wiki_rxnorm_concepts_data group by source;
+
+
+create table WQ_wiki_rxnorm_DF_CUI
+AS SELECT
+   cui,count(distinct source) AS docs_with_cui
+FROM wiki_rxnorm_concepts_data group by cui;
+
+create view WQ_wiki_rxnorm_DOC_COUNTS
+AS SELECT
+   count(distinct source) AS docs_counts
+FROM wiki_rxnorm_concepts_data;
+
+create table WQ_wiki_rxnorm_DF
+AS SELECT
+   distinct WQ_wiki_rxnorm_DF_CUI.cui,
+   WQ_wiki_rxnorm_DF_CUI.docs_with_cui,
+   WQ_wiki_rxnorm_DOC_COUNTS.docs_counts,((WQ_wiki_rxnorm_DF_CUI.docs_with_cui * 1.0) / WQ_wiki_rxnorm_DOC_COUNTS.docs_counts) AS DF
+FROM (WQ_wiki_rxnorm_DF_CUI join WQ_wiki_rxnorm_DOC_COUNTS);
+
+create table WQ_wiki_rxnorm_TF
+AS SELECT
+   c.source,
+   c.cui,
+   c.freqs_in_doc,
+   t.counts_in_doc,((c.freqs_in_doc * 1.0) / t.counts_in_doc) AS TF
+FROM (WQ_wiki_rxnorm_concepts_byDoc c left join WQ_wiki_rxnorm_counts_byDoc t on((c.source = t.source)));
+
+create table WQ_wiki_rxnorm_TFIDF
+AS SELECT
+   t.cui,
+   t.source,
+   t.freqs_in_doc,
+   t.counts_in_doc,
+   t.TF,
+   d.docs_with_cui,
+   d.docs_counts,
+   d.DF,(t.TF / d.DF) AS TFIDF
+FROM (WQ_wiki_rxnorm_TF t left join WQ_wiki_rxnorm_DF d on((t.cui = d.cui)));
+```
 
 ## Others
 
